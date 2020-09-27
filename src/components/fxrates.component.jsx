@@ -126,7 +126,7 @@ class FxRates extends React.Component {
                         })}
                 </div>
             </div>
-            <div className="chart">
+            <div className='chart'>
                 <Line height={100} data={this.state.tsData}/>
             </div>
         </div>
