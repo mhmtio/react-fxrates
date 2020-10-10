@@ -54,17 +54,17 @@ class FxRates extends React.Component {
         }, () => this.retrieveFxData());
     }
 
-    getDataSets(fxRates, baseCcy, quoteCcys) {
+    getDataSets(fxRates, baseCurrency, quoteCurrencies) {
         return {
-            labels: fxRates.data.adoByCcy1[0].timeseries.map(t => "" + t.date),
-            datasets: quoteCcys.map((currency, index) => {
-                    const dIndex = fxRates.data.adoByCcy1.findIndex(d => d.ccy2 === currency);
+            labels: fxRates.data.fxRatesByBaseCurrency[0].timeseries.map(t => "" + t.date),
+            datasets: quoteCurrencies.map((currency) => {
+                    const dIndex = fxRates.data.fxRatesByBaseCurrency.findIndex(d => d.quoteCurrency === currency);
                     return {
                         ...dataSetOpts,
-                        label: baseCcy + ' / ' + currency,
+                        label: baseCurrency + ' / ' + currency,
                         borderColor: colors[dIndex],
                         pointBorderColor: colors[dIndex],
-                        data: fxRates.data.adoByCcy1[dIndex].timeseries.map(t => t.value)
+                        data: fxRates.data.fxRatesByBaseCurrency[dIndex].timeseries.map(t => t.rate)
                     };
                 }
             )
@@ -75,7 +75,7 @@ class FxRates extends React.Component {
         getFxData(this.state.selectedBaseCurrency)
             .then(fxRates => {
                 this.setState({
-                    quoteCurrencies: fxRates.data.adoByCcy1.map(c => c.ccy2),
+                    quoteCurrencies: fxRates.data.fxRatesByBaseCurrency.map(c => c.quoteCurrency),
                     fxRates: fxRates
                 }, () => console.log(this.state));
             });
@@ -90,7 +90,6 @@ class FxRates extends React.Component {
                 , this.state.selectedBaseCurrency
                 , [...quoteCurrencies.keys()])
             return {
-                ...prevState,
                 selectedQuoteCurrencies: quoteCurrencies,
                 tsData: plotData
             };

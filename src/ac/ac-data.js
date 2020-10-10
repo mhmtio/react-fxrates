@@ -9,19 +9,16 @@ export function getBaseCurrencies() {
   return [ 'EUR', 'GBP', 'USD' ];
 }
 
-export function getFxData(baseCcy) {
+export function getFxData(baseCurrency) {
     return client.query({
-        variables: {baseCcy: baseCcy},
+        variables: {baseCurrency: baseCurrency},
         query: gql`
-            query FX($baseCcy: String) {
-                adoByCcy1(ccy1: $baseCcy) {
-                    id
-                    name
-                    ccy1
-                    ccy2
+            query FX($baseCurrency: String) {
+                fxRatesByBaseCurrency(baseCurrency: $baseCurrency) {
+                    quoteCurrency
                     timeseries {
                         date
-                        value
+                        rate
                     }
                 }
             }
